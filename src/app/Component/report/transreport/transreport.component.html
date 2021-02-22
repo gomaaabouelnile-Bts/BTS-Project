@@ -1,0 +1,559 @@
+
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+  <div class="Company">
+    <h3> Transaction</h3>
+  </div>
+  <hr>
+<div class="form-row" [hidden]="insert">
+  <div class="form-group col-md-6" *ngIf="GroupInsert==='1'">
+   <button type="button" id="btnoption" class="btn btn-success btn-sm" (click) = "Addnewrecord()" >
+    <i class="fas fa-plus"></i> {{'AddNewRecord' | translate }}
+  </button>
+  </div>
+<!--   <div class="form-group col-md-6" >
+  <button type="button" id="btnoption" class="btn btn-info btn-sm" (click) = "UpdateRecord()"  *ngIf="GroupEdit==='1'">
+    <i class="fas fa-edit"></i> Show
+  </button>
+  </div> -->
+</div>
+</div>
+
+<div class="container" [hidden]="insert">
+  <div class="form-row">
+    <div class="form-group col-md-12">
+      <h4>Last Extract Date from ERP: {{eDate}}</h4>
+      
+      
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-6">
+    
+      <label [style.float]="Rtl? 'right':'left'" for="InvoiceStatus"><span [style.float]="Rtl? 'right':'left'" 
+        class="badge badge-pill badge-light">Invoice Status:</span>
+       </label>
+       <select class="custom-select custom-select-sm"
+        name="InvoiceStatus" id="InvoiceStatus"  [​value]="2"
+        (change)="onChangeSelectionaInvoiceStatus($event.target.value)" >
+        <option    value="0">
+          ALL
+        </option>
+        <option *ngFor="let option of InvoiceStatusList" value={{option.transactionStatusCode}}>
+            {{option.transactionStatusEngName}}
+        </option>
+    </select>
+      
+    </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+     
+      <button type="button" class="btn btn-primary" (click)="ExtractTransaction()"
+      >Extract Transaction from ERP</button>
+    </div>
+    <div class="form-group col-md-4">
+      <button type="button" class="btn btn-warning" (click)="ValidateTransactions()"
+      >Validate Transactions</button></div>
+      <div class="form-group col-md-4">
+         <button type="button" class="btn btn-success" (click)="SubmittoETA()"
+         >Submit to ETA</button></div>
+  </div>
+  <div class="form-row">
+    <div class="form-group col-md-4">
+     
+      <button type="button" class="btn btn-danger" (click)="UpdateInvoiceStatus()" hidden>
+        Check Transaction Status</button>
+    </div>
+  </div>
+  <div class="form-row">
+  <div class="form-group col-md-12" *ngIf="displayItemNameList!=''">
+    <div class="input-group">
+      <div class="input-group-prepend">
+        <span class="input-group-text">Validate Transaction</span>
+      </div>
+      <textarea class="form-control" aria-label="With textarea"  ng-list="&#10;"  ng-trim="false"
+      
+      >
+     {{displayItemNameList}}
+      </textarea>
+    </div>
+  </div>
+  </div>
+  <div class="form-row">
+    <div class="form-group form-check">
+      <input  #selectall="ngModel" type="checkbox" 
+      [(ngModel)]='showyn'
+      class="form-check-input" id="selectall" (change)="eventCheck($event.target)">
+      <label class="form-check-label" for="selectall">Select All</label>
+    </div></div>
+<div class="form-row">
+    <ag-grid-angular 
+    #agGrid
+    style="width: 105%; height: 450px;" 
+    class="ag-theme-alpine"
+    [rowData]="rowData | async " 
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [enableRtl]="Rtl"
+    animateRows
+    [rowSelection]="rowSelection2"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (rowDoubleClicked)="onrowDoubleClicked($event)"
+    pagination>
+    </ag-grid-angular>
+</div>
+</div>
+
+<div class="container" [hidden]="!insert">
+    
+  
+          
+           <form #Groups="ngForm" (ngSubmit)="onSubmit(Groups)"  >
+            <div class="form-row">
+              
+             <!--  <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="TransactionKey">
+                    <span [style.float]="Rtl? 'right':'left'" class="badge badge-pill badge-light">
+                        Transaction Key</span>
+                 </label>
+                <input #TransactionKey="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                name="TransactionKey" id="TransactionKey"
+                 [(ngModel)]="objServ.StransactionsH.transactionKey"  placeholder="TransactionKey" required>
+                 <div class="text-danger" *ngIf="isSubmitted && TransactionKey.invalid &&
+                  TransactionKey.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div> -->
+
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="DocumentType"><span [style.float]="Rtl? 'right':'left'" 
+                  class="badge badge-pill badge-light">Document Type</span>
+                 </label>
+                <input #DocumentType="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                name="DocumentType" id="DocumentType"
+                 [(ngModel)]="objServ.StransactionsH.documentType"  placeholder="{{'LatName' | translate}}" required>
+                 <div class="text-danger" *ngIf="isSubmitted && DocumentType.invalid && DocumentType.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+              
+
+
+              
+            </div>
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="DateTimeIssued"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">DateTime Issued </span>
+                   </label>
+                  <input #DateTimeIssued="ngModel" type="datetime-local" data-dismiss="modal"
+                   class="form-control input-sm"  name="DateTimeIssued" id="DateTimeIssued"
+                   [(ngModel)]="objServ.StransactionsH.dateTimeIssued"  placeholder="Registration Date" required>
+                   <div class="text-danger" *ngIf="isSubmitted && DateTimeIssued.invalid && DateTimeIssued.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="CustomerType"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Customer Type </span>
+                       </label>
+                      <input #CustomerType="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                      name="CustomerType" id="CustomerType"
+                       [(ngModel)]="objServ.StransactionsH.customerType"  placeholder="CustomerType" required>
+                       <div class="text-danger" *ngIf="isSubmitted && CustomerType.invalid && CustomerType.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+               
+              </div>
+             
+                
+              </div>
+
+
+
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="CustomerName"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Customer Name</span>
+                       </label>
+                      <input #CustomerName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                      name="CustomerName" id="CustomerName"
+                       [(ngModel)]="objServ.StransactionsH.customerName"  placeholder="CustomerName" required>
+                       <div class="text-danger" *ngIf="isSubmitted && CustomerName.invalid && CustomerName.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="CustomerTaxId"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Customer Tax Id </span>
+                       </label>
+                      <input #CustomerTaxId="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                      name="CustomerTaxId" id="CustomerTaxId"
+                       [(ngModel)]="objServ.StransactionsH.customerTaxId"  placeholder="CustomerTaxId" required>
+                       <div class="text-danger" *ngIf="isSubmitted && CustomerTaxId.invalid && CustomerTaxId.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+               
+              </div>
+             
+                
+              </div>
+
+
+
+           
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="CountryName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Country Name</span>
+                   </label>
+                  <input #CountryName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="CountryName" id="CountryName"
+                   [(ngModel)]="objServ.StransactionsH.countryName"  placeholder="CountryName" required>
+                   <div class="text-danger" *ngIf="isSubmitted && CountryName.invalid && CountryName.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="GovernorateName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Governorate Name</span>
+                   </label>
+                  <input #governorateName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="governorateName" id="governorateName"
+                   [(ngModel)]="objServ.StransactionsH.governorateName"  placeholder="Governorate Name" required>
+                   <div class="text-danger" *ngIf="isSubmitted && governorateName.invalid && governorateName.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="regionName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Region Name</span>
+                   </label>
+                  <input #regionName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="regionName" id="regionName"
+                   [(ngModel)]="objServ.StransactionsH.regionName"  placeholder="Region Name" required>
+                   <div class="text-danger" *ngIf="isSubmitted && regionName.invalid && regionName.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+             
+             
+                
+              </div>
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="postalCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Postal Code</span>
+                   </label>
+                  <input #postalCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="postalCode" id="postalCode"
+                   [(ngModel)]="objServ.StransactionsH.postalCode"  placeholder="Postal Code" required>
+                   <div class="text-danger" *ngIf="isSubmitted && postalCode.invalid && postalCode.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="floor"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Floor</span>
+                   </label>
+                  <input #floor="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="floor" id="floor"
+                   [(ngModel)]="objServ.StransactionsH.floor"  placeholder="Floor" required>
+                   <div class="text-danger" *ngIf="isSubmitted && floor.invalid && floor.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="street"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Street</span>
+                   </label>
+                  <input #street="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="street" id="street"
+                   [(ngModel)]="objServ.StransactionsH.street"  placeholder="Street" required>
+                   <div class="text-danger" *ngIf="isSubmitted && street.invalid && street.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="buildingNumber"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Building Number</span>
+                   </label>
+                  <input #buildingNumber="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="buildingNumber" id="Building Number"
+                   [(ngModel)]="objServ.StransactionsH.buildingNumber"  placeholder="Building Number" required>
+                   <div class="text-danger" *ngIf="isSubmitted && buildingNumber.invalid && buildingNumber.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="room"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Room</span>
+                   </label>
+                  <input #room="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="room" id="room"
+                   [(ngModel)]="objServ.StransactionsH.room"  placeholder="Room" required>
+                   <div class="text-danger" *ngIf="isSubmitted && room.invalid && room.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="landmark"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Landmark</span>
+                   </label>
+                  <input #landmark="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="landmark" id="landmark"
+                   [(ngModel)]="objServ.StransactionsH.landmark"  placeholder="Landmark" required>
+                   <div class="text-danger" *ngIf="isSubmitted && landmark.invalid && landmark.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="additionalInformation"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Additional Information</span>
+                   </label>
+                  <input #additionalInformation="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="additionalInformation" id="additionalInformation"
+                   [(ngModel)]="objServ.StransactionsH.additionalInformation"  placeholder="Additional Information" required>
+                   <div class="text-danger" *ngIf="isSubmitted && additionalInformation.invalid && additionalInformation.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="eRPCurrencyCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Currency Code</span>
+                   </label>
+                  <input #eRPCurrencyCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="eRPCurrencyCode" id="eRPCurrencyCode"
+                   [(ngModel)]="objServ.StransactionsH.eRPCurrencyCode"  placeholder="Currency Code" required>
+                   <div class="text-danger" *ngIf="isSubmitted && eRPCurrencyCode.invalid && eRPCurrencyCode.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="exchangeRate"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Exchange Rate</span>
+                       </label>
+                      <input #exchangeRate="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                       name="exchangeRate" id="exchangeRate"
+                       [(ngModel)]="objServ.StransactionsH.exchangeRate"  placeholder="Exchange Rate" required>
+                       <div class="text-danger" *ngIf="isSubmitted && exchangeRate.invalid && exchangeRate.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="totalSalesAmount"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Total Sales Amount</span>
+                   </label>
+                  <input #totalSalesAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="totalSalesAmount" id="totalSalesAmount"
+                   [(ngModel)]="objServ.StransactionsH.totalSalesAmount"  placeholder="Total Sales Amount" required>
+                   <div class="text-danger" *ngIf="isSubmitted && totalSalesAmount.invalid && totalSalesAmount.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+          
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="totalDiscountAmount"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Total Discount Amount </span>
+                       </label>
+                      <input #totalDiscountAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                       name="totalDiscountAmount" id="totalDiscountAmount"
+                       [(ngModel)]="objServ.StransactionsH.totalDiscountAmount"  placeholder="Total Discount Amount" required>
+                       <div class="text-danger" *ngIf="isSubmitted && totalDiscountAmount.invalid && totalDiscountAmount.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="netAmount"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Net Amount</span>
+                   </label>
+                  <input #netAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="netAmount" id="netAmount"
+                   [(ngModel)]="objServ.StransactionsH.netAmount"  placeholder="Net Amount" required>
+                   <div class="text-danger" *ngIf="isSubmitted && netAmount.invalid && netAmount.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="totalVAT"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Total VAT </span>
+                       </label>
+                      <input #totalVAT="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                       name="totalVAT" id="totalVAT"
+                       [(ngModel)]="objServ.StransactionsH.totalVAT"  placeholder="Total VAT" required>
+                       <div class="text-danger" *ngIf="isSubmitted && totalVAT.invalid && totalVAT.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="totalWHT"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Total WHT</span>
+                   </label>
+                  <input #totalWHT="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="totalWHT" id="totalWHT"
+                   [(ngModel)]="objServ.StransactionsH.totalWHT"  placeholder="Total WHT" required>
+                   <div class="text-danger" *ngIf="isSubmitted && totalWHT.invalid && totalWHT.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="extraDiscountAmount"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Extra Discount Amount </span>
+                       </label>
+                      <input #extraDiscountAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                       name="extraDiscountAmount" id="extraDiscountAmount"
+                       [(ngModel)]="objServ.StransactionsH.extraDiscountAmount"  placeholder="Extra Discount Amount" required>
+                       <div class="text-danger" *ngIf="isSubmitted && extraDiscountAmount.invalid && extraDiscountAmount.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="totalItemsDiscountAmount"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Total Items Discount Amount</span>
+                   </label>
+                  <input #totalItemsDiscountAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="totalItemsDiscountAmount" id="totalItemsDiscountAmount"
+                   [(ngModel)]="objServ.StransactionsH.totalItemsDiscountAmount"  placeholder="Total Items Discount Amount" required>
+                   <div class="text-danger" *ngIf="isSubmitted && totalItemsDiscountAmount.invalid && totalItemsDiscountAmount.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div> 
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                    <label [style.float]="Rtl? 'right':'left'" for="totalAmount"><span [style.float]="Rtl? 'right':'left'" 
+                        class="badge badge-pill badge-light">Total Amount </span>
+                       </label>
+                      <input #totalAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                       name="totalAmount" id="totalAmount"
+                       [(ngModel)]="objServ.StransactionsH.totalAmount"  placeholder=">Total Amount" required>
+                       <div class="text-danger" *ngIf="isSubmitted && totalAmount.invalid && totalAmount.errors?.required ">
+                        <small>{{'required' | translate}}</small>
+                  </div>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="totalSalesAmount"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Total Sales Amount</span>
+                   </label>
+                  <input #totalSalesAmount="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="totalSalesAmount" id="totalSalesAmount"
+                   [(ngModel)]="objServ.StransactionsH.totalSalesAmount"  placeholder="Total Sales Amount" required>
+                   <div class="text-danger" *ngIf="isSubmitted && totalSalesAmount.invalid && totalSalesAmount.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+              <div class="form-row">
+                <div class="form-group col-md-12">
+                <ag-grid-angular 
+                #agGrid2
+                style="width: 95%; height: 450px;" 
+                class="ag-theme-alpine"
+                [rowData]="rowData2 | async " 
+                [columnDefs]="columnDefs2"
+              
+                animateRows
+                [rowSelection]="rowSelection2"
+            
+                (gridReady)="onGridReady2($event)"
+               
+                pagination>
+                </ag-grid-angular>
+                </div>
+            </div>
+<hr>
+              <div class="form-row">
+                <div class="col text-center">
+                <button class="btn btn-success btn-sm" data-style="zoom-in" *ngIf="GroupInsert==='1'">
+                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                    
+                  </button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                  <button type="button" class="btn btn-outline-dark btn-sm" (click)="CancelSave()">
+                    <span class="fas fa-undo"> &nbsp;&nbsp;</span> {{'Cancel' | translate}}&nbsp;&nbsp;</button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+
+                </div></div>
+            <br><br>
+              
+        </form>
+      
+         
+            </div>
+ 

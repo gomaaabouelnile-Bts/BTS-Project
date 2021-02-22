@@ -1,0 +1,306 @@
+
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+  <div class="Company">
+    <h3> Company</h3>
+  </div>
+  <hr>
+<div class="form-row" [hidden]="insert">
+  <div class="form-group col-md-6" *ngIf="GroupInsert==='1'">
+   <button type="button" id="btnoption" class="btn btn-success btn-sm" (click) = "Addnewrecord()" >
+    <i class="fas fa-plus"></i> {{'AddNewRecord' | translate }}
+  </button>
+  </div>
+  <div class="form-group col-md-6" >
+  <button type="button" id="btnoption" class="btn btn-info btn-sm" (click) = "UpdateRecord()"  *ngIf="GroupEdit==='1'">
+    <i class="fas fa-edit"></i> {{'Update' | translate }}
+  </button>
+  </div>
+</div>
+</div>
+
+<div class="container" [hidden]="insert">
+
+<div class="form-row">
+    <ag-grid-angular 
+    #agGrid
+    style="width: 95%; height: 450px;" 
+    class="ag-theme-alpine"
+    [rowData]="rowData | async " 
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [enableRtl]="Rtl"
+    animateRows
+    [rowSelection]="rowSelection"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (rowDoubleClicked)="onrowDoubleClicked($event)"
+    pagination>
+    </ag-grid-angular>
+</div>
+</div>
+
+<div class="container" [hidden]="!insert">
+    
+  
+          
+           <form #Groups="ngForm" (ngSubmit)="onSubmit(Groups)"  >
+            <div class="form-row">
+              
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="companyName">
+                  <span [style.float]="Rtl? 'right':'left'" class="badge badge-pill badge-light">
+                    Company Arabic Name</span>
+                 </label>
+                <input #companyName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  name="companyName" id="companyName"
+                 [(ngModel)]="objServ.SIcompany.companyName"  placeholder="{{'Name' | translate}}" required>
+                 <div class="text-danger" *ngIf="isSubmitted && companyName.invalid && companyName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="companyEngName"><span [style.float]="Rtl? 'right':'left'" 
+                  class="badge badge-pill badge-light">Company English Name</span>
+                 </label>
+                <input #companyEngName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  name="companyEngName" id="companyEngName"
+                 [(ngModel)]="objServ.SIcompany.companyEngName"  placeholder="{{'LatName' | translate}}" required>
+                 <div class="text-danger" *ngIf="isSubmitted && companyEngName.invalid && companyEngName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+              
+
+
+              
+            </div>
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="registrationDate"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Registration Date</span>
+                   </label>
+                  <input #registrationDate="ngModel" type="datetime-local" data-dismiss="modal" class="form-control input-sm"  name="registrationDate" id="registrationDate"
+                   [(ngModel)]="objServ.SIcompany.registrationDate"  placeholder="Registration Date" required>
+                   <div class="text-danger" *ngIf="isSubmitted && registrationDate.invalid && registrationDate.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="countryCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Country Code</span>
+                   </label>
+                   <input #countryName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                    name="countryName" id="countryName"
+                   [(ngModel)]="objServ.SIcompany.countryName"  placeholder="country Name" required>
+                   <div class="text-danger" *ngIf="isSubmitted && countryName.invalid && countryName.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+               
+              </div>
+             
+                
+              </div>
+
+
+
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="governorateName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Governorate</span>
+                   </label>
+                   <input #governorateName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                    name="governorateName" id="governorateName"
+                   [(ngModel)]="objServ.SIcompany.governorateName"  placeholder="country Name" required>
+                   <div class="text-danger" *ngIf="isSubmitted && governorateName.invalid && governorateName.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="regionName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Region</span>
+                   </label>
+                   <input #regionName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="regionName" id="regionName"
+                  [(ngModel)]="objServ.SIcompany.regionName"  placeholder="region Name" required>
+                  <div class="text-danger" *ngIf="isSubmitted && regionName.invalid && regionName.errors?.required ">
+                   <small>{{'required' | translate}}</small>
+             </div>
+               
+              </div>
+             
+                
+              </div>
+
+
+
+           
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="street"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Street</span>
+                   </label>
+                  <input #street="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="street" id="street"
+                   [(ngModel)]="objServ.SIcompany.street"  placeholder="Street" >
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="buildingNumber"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Building Number</span>
+                   </label>
+                  <input #buildingNumber="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="buildingNumber" id="buildingNumber"
+                   [(ngModel)]="objServ.SIcompany.buildingNumber"  placeholder="Building Number" required>
+                   <div class="text-danger" *ngIf="isSubmitted && buildingNumber.invalid && buildingNumber.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="postalCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Postal Code</span>
+                   </label>
+                  <input #postalCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="postalCode" id="postalCode"
+                   [(ngModel)]="objServ.SIcompany.postalCode"  placeholder="Postal Code" >
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="floor"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Floor</span>
+                   </label>
+                  <input #floor="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="floor" id="floor"
+                   [(ngModel)]="objServ.SIcompany.floor"  placeholder="Floor" >
+                  
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="room"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Room</span>
+                   </label>
+                  <input #room="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="room" id="room"
+                   [(ngModel)]="objServ.SIcompany.room"  placeholder="Postal Code" >
+              
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="landmark"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Landmark</span>
+                   </label>
+                  <input #landmark="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="landmark" id="landmark"
+                   [(ngModel)]="objServ.SIcompany.landmark"  placeholder="Landmark" >
+                 
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="additionalInformation"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Additional Information</span>
+                   </label>
+                  <input #additionalInformation="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="additionalInformation" id="additionalInformation"
+                   [(ngModel)]="objServ.SIcompany.additionalInformation"  placeholder="Additional Information" >
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="branchID"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Branch ID</span>
+                   </label>
+                  <input #branchID="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="branchID" id="branchID"
+                   [(ngModel)]="objServ.SIcompany.branchID"  placeholder="branchID" required>
+                   <div class="text-danger" *ngIf="isSubmitted && branchID.invalid && branchID.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="activityCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Activity Code</span>
+                   </label>
+                   <select #activityCode="ngModel" class="custom-select custom-select-sm"
+                    [(ngModel)]="objServ.SIcompany.activityCode" name="activityCode" id="activityCode"
+                    (ngModelChange)="onChangeSelectionactivityCode($event)" required>
+                    <option *ngFor="let option of activityCodeList" value={{option.activityCode}}>
+                        {{option.activityEngName}}
+                    </option>
+                </select>
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="taxID"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Tax ID</span>
+                   </label>
+                  <input #taxID="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="taxID" id="taxID"
+                   [(ngModel)]="objServ.SIcompany.taxID"  placeholder="taxID" required>
+                   <div class="text-danger" *ngIf="isSubmitted && taxID.invalid && taxID.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+             <div class="form-row">
+            
+         
+                <div class="form-group col-md-6">
+                  
+                </div>
+                </div> 
+
+<hr>
+              <div class="form-row">
+                <div class="col text-center">
+                <button class="btn btn-success btn-sm" data-style="zoom-in" *ngIf="GroupInsert==='1'">
+                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                    
+                  </button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                  <button type="button" class="btn btn-outline-dark btn-sm" (click)="CancelSave()">
+                    <span class="fas fa-undo"> &nbsp;&nbsp;</span> {{'Cancel' | translate}}&nbsp;&nbsp;</button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger btn-sm" *ngIf="objServ.SIcompany.companyCode>0&&GroupDelete==='1'"
+                        (click)="Delete(objServ.SIcompany.companyCode)">
+                        <span class="fas fa-trash-alt">&nbsp;&nbsp;</span>{{'Delete' | translate}}  &nbsp;&nbsp;</button>
+                </div></div>
+            <br><br>
+              
+        </form>
+      
+         
+            </div>
+ 

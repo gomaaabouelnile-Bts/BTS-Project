@@ -1,0 +1,64 @@
+/******start technologies section ******/
+.btn:focus {
+  outline: 0;
+  box-shadow:none;
+}
+.technologies {
+  display: flex;
+  max-height: 5em;
+  color: #2F3242;
+
+}
+.services-des{
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+}
+.technologies:not(.collapsed) {
+  color: #F5A71C;
+}
+
+.technologies:hover,
+.technologies:focus {
+  text-decoration: none;
+}
+
+.technologies--heading>span {
+  color: #F5A71C;
+}
+
+.card-header {
+  padding: 0;
+}
+
+.technologies h5 {
+  align-self: center;
+  margin-left: .7em;
+}
+
+.technology--icon {
+  border: 1px solid #ddd;
+  border-radius: 3rem;
+  font-size: 2em;
+  width: 2em;
+  height: 2em;
+  text-align: center;
+  padding: 7px;
+}
+
+.technologies-chevron-down {
+  display: flex;
+  align-self: center;
+  margin-left: auto;
+}
+
+.technologies:not(.collapsed) .technologies-chevron-down {
+    transform: rotate(180deg);
+    transition: 400ms ease-in-out;
+
+}
+.technologies .technologies-chevron-down {
+    transition: 400ms ease-in-out;
+}
+
+/******End technologies section ******/

@@ -1,0 +1,122 @@
+
+
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+    <div class="Company">
+      <h3> Currency</h3>
+    </div>
+    <hr>
+<div class="form-row">
+  <div class="form-group col-md-6">
+   <button type="button" id="btnoption" class="btn btn-success btn-sm" (click) = "Addnewrecord(template)" >
+    <i class="fas fa-plus"></i> {{'AddNewRecord' | translate }}
+  </button>
+  </div>
+  <div class="form-group col-md-6">
+  <button type="button" id="btnoption" class="btn btn-info btn-sm" (click) = "UpdateRecord(template)" >
+    <i class="fas fa-edit"></i> {{'Update' | translate }}
+  </button>
+  </div>
+</div>
+</div>
+<hr>
+<div class="container">
+
+<div class="form-row">
+    <ag-grid-angular 
+    #agGrid
+    style="width: 95%; height: 450px;" 
+    class="ag-theme-alpine"
+    [rowData]="rowData | async " 
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [enableRtl]="Rtl"
+    animateRows
+    [rowSelection]="rowSelection"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (rowDoubleClicked)="onrowDoubleClicked($event)"
+    pagination>
+    </ag-grid-angular>
+</div>
+</div>
+
+<ng-template #template>
+    
+    <div class="modal" id="myModal" role="dialog" [dir]="Rtl==true?'RTL':'LTR'" [style.display]=" 'block'">
+      <div class="modal-dialog  modal-lg" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h6 class="modal-title" id="exampleModalLongTitle">{{title| translate }}</h6>
+              <button type="button" class="close" (click) = "hide()" >
+                <span aria-hidden="true">&times;</span>
+              </button>
+            </div>
+            <div class="modal-body">
+           <form #Groups="ngForm" (ngSubmit)="onSubmit(Groups)"  >
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="currencyCode"><span [style.float]="Rtl? 'right':'left'" class="badge badge-pill badge-light">
+                    Currency Code</span>
+                   </label>
+                  <input #currencyCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                  name="currencyCode" id="currencyCode"
+                   [(ngModel)]="objServ.SICurrencies.currencyCode"  placeholder="{{'Currency Code' | translate}}" required>
+                   <div class="text-danger" *ngIf="isSubmitted && currencyCode.invalid && currencyCode.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+            </div>
+            <div class="form-row">
+              
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" 
+                for="currencyName"><span [style.float]="Rtl? 'right':'left'"
+                 class="badge badge-pill badge-light">Currency Arabic Name</span>
+                 </label>
+                <input #currencyName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"  
+                name="currencyName" id="currencyName"
+                 [(ngModel)]="objServ.SICurrencies.currencyName"  placeholder="{{'Name' | translate}}" required>
+                 <div class="text-danger" *ngIf="isSubmitted && currencyName.invalid && currencyName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="currencyEngName"><span [style.float]="Rtl? 'right':'left'" 
+                  class="badge badge-pill badge-light">Currency English Name</span>
+                 </label>
+                <input #currencyEngName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                 name="currencyEngName" id="currencyEngName"
+                 [(ngModel)]="objServ.SICurrencies.currencyEngName"  placeholder="{{'LatName' | translate}}" required>
+                 <div class="text-danger" *ngIf="isSubmitted && currencyEngName.invalid && currencyEngName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+              
+            </div>
+            
+           
+            <div class="modal-footer">
+                <button class="btn btn-success btn-sm" data-style="zoom-in" >
+                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                    
+                  </button>
+
+                    <button type="button" class="btn btn-danger btn-sm" *ngIf="objServ.SICurrencies.currencyCode!=''"
+                        (click)="Delete(objServ.SICurrencies.currencyCode)">
+                        <span class="fas fa-trash-alt">&nbsp;&nbsp;</span>{{'Delete' | translate}}  &nbsp;&nbsp;</button>
+
+              </div>
+        </form>
+      
+            </div>
+         
+          </div>
+  
+        </div>
+        </div>
+    </ng-template>
+ 

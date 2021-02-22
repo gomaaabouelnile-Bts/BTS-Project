@@ -1,0 +1,75 @@
+.carousel-item {
+  background-color: #000;
+
+}
+
+.slider .carousel-inner .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  height: 100%;
+  width: 100%;
+  background: #0000007c;
+  z-index: 2;
+}
+
+.slider .carousel-item {
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+}
+
+.carousel--one {
+  background-image: url('/assets/images/Photo_01.png')
+}
+
+.carousel--two {
+  background-image: url('/assets/images/Photo_02.png')
+}
+
+.carousel--three {
+  background-image: url('/assets/images/Photo_04.png')
+}
+
+.carousel-caption {
+  bottom: 5em;
+  font-family: "Aileron";
+}
+
+.carousel-indicators .active {
+  background-color: #F5A71C;
+}
+.carousel-caption{
+  text-align: left;
+}
+.carousel-caption h2 {
+  font-weight: 900;
+  font-family: 'Open Sans', sans-serif;
+  font-size: 60px;
+}
+
+.carousel-caption .slide-des p {
+  font-size: 50px;
+  /* padding: 1em; */
+  color: #F5A71C;
+  font-family: sans-serif;
+}
+
+
+.carousel-item button {
+  background-color: #F5A71C;
+  color: #ddd;
+  font-weight: bold;
+
+
+}
+
+@media (max-width: 768px) {
+  .carousel-caption .slide-des {
+    font-size: 18px;
+    padding: 0;
+    text-align: center;
+
+  }
+}

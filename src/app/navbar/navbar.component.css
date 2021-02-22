@@ -1,0 +1,88 @@
+
+
+/* Start navebar */
+.navbar-dark .navbar-nav .active>.nav-link,
+.navbar-dark .navbar-nav .nav-link:hover {
+
+  color: #F5A71C;
+}
+
+.navbar-dark .navbar-nav .nav-link {
+  color: #fff;
+}
+
+.system-des {
+  position: relative;
+  z-index: 1;
+  min-width: 160px;
+  height: 45px;
+  line-height: 45px;
+  font-size: 16px;
+  font-weight: 600;
+  display: inline-block;
+  padding: 0 30px;
+  text-align: center;
+  text-transform: capitalize;
+  color: black;
+  border: none;
+  border-radius: 50px;
+  background-color: #ffffff;
+  -webkit-transition-duration: 500ms;
+  -o-transition-duration: 500ms;
+  transition-duration: 500ms;
+  -webkit-box-shadow: 0 6px 50px 8px hsla(38, 92%, 54%, 0.15);
+  box-shadow: 0 6px 50px 8px hsla(38, 92%, 54%, 0.15);
+}
+
+.system-des a {
+  color: #000;
+  text-decoration: none;
+}
+
+.system-des:hover {
+  -webkit-box-shadow: 0 6px 50px 8px rgba(21, 131, 233, 0.15);
+  box-shadow: 0 6px 50px 8px rgba(21, 131, 233, 0.15);
+  background-color: #F5A71C;
+  color: #ffffff;
+}
+
+.register a {
+  display: inline-block;
+}
+
+.register span {
+  color: #fff;
+}
+
+.search>button {
+  background: inherit;
+}
+
+.search>.btn:focus {
+  box-shadow: none
+}
+
+.search>button i {
+  color: #fff;
+}
+
+.search>button i:hover {
+  color: #F5A71C;
+
+}
+
+
+.search .form-control:focus {
+  border-color: #F5A71C;
+  box-shadow: none
+}
+
+
+.search .btn-warning:focus {
+  box-shadow: none
+}
+
+/* .search  */
+
+/* End navebar */
+/* strat slider section */

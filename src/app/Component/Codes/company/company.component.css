@@ -1,0 +1,7 @@
+.Company{
+    display: flex;
+    justify-content: space-between;
+    margin-right: .5em;
+    margin-left: .5em;
+    margin-top: 100px;
+}

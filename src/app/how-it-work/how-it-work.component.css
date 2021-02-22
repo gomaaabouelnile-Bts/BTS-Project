@@ -1,0 +1,46 @@
+.work-head{
+    color: #F5A71C;
+}
+.figure{
+    width: 100%;
+    height: 100%;
+    -webkit-background-size: cover;
+    -moz-background-size: cover;
+    -o-background-size: cover;
+    background-size: cover;
+    border-radius: 6px;
+}
+.vendors-fig{
+    background-image: url('/assets/images/how-it-work/shu3.png');
+}
+.futureTechnology-fig{
+    background-image: url('/assets/images/how-it-work/FutureTechnolog.jpg');
+    
+}
+.customersRegistration-fig{
+    background-image: url('/assets/images/how-it-work/img-3.png');
+
+}
+.CustomerContact-box1{
+    background-image: url('/assets/images/how-it-work/customerConnectbox1.svg');
+
+}
+.CustomerContact-box2{
+    background-image: url('/assets/images/how-it-work/customerConnectbox2.svg');
+
+}
+.CustomerContact-box3{
+    background-image: url('/assets/images/how-it-work/CustomerContact-box3.svg');
+    width: 600px;
+
+}
+.CustomerContact-box4{
+    background-image: url('/assets/images/how-it-work/CustomerContact-box4.svg');
+    width: 600px;
+
+}
+/* 
+.ConnectRequest-fig{
+    background-image: url('/assets/images/ConnectRequest-fig.jpeg') ;
+
+} */

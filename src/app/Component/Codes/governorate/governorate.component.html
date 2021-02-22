@@ -1,0 +1,139 @@
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+    <div style="text-align: center; justify-content: center; margin-top: 30px; margin-bottom: 30px;">
+        <h3> Groups</h3>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <button type="button" id="btnoption" class="btn btn-success btn-sm" (click)="Addnewrecord(template)">
+                <i class="fas fa-plus"></i> {{'AddNewRecord' | translate }}
+            </button>
+        </div>
+        <div class="form-group col-md-6">
+            <button type="button" id="btnoption" class="btn btn-info btn-sm" (click)="UpdateRecord(template)">
+                <i class="fas fa-edit"></i> {{'Update' | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="container">
+
+    <div class="form-row">
+        <ag-grid-angular #agGrid style="width: 95%; height: 450px;" class="ag-theme-alpine" [rowData]="rowData | async "
+            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [enableRtl]="Rtl" animateRows
+            [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged($event)"
+            (gridReady)="onGridReady($event)" (rowDoubleClicked)="onrowDoubleClicked($event)" pagination>
+        </ag-grid-angular>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal" id="myModal" role="dialog" [dir]="Rtl==true?'RTL':'LTR'" [style.display]=" 'block'">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLongTitle">{{title| translate }}</h6>
+                    <button type="button" class="close" (click)="hide()" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #Governorate="ngForm" (ngSubmit)="onSubmit(Governorate)">
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="governorateCode"><span
+                                    [style.float]="Rtl? 'right':'left'"
+                                    class="badge badge-pill badge-light">governorateCode</span>
+                            </label>
+                            <input #governorateCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"
+                                name="governorateCode" id="governorateCode"
+                                [(ngModel)]="GovernorateServ.SIgovernorate.governorateCode"
+                                placeholder="governorateCode" required>
+                            <div class="text-danger" *ngIf="isSubmitted && governorateCode.invalid && governorateCode.errors?.required ">
+                                <small>{{'required' | translate}}</small>
+                            </div>
+                            </div></div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="governoratName"><span
+                                        [style.float]="Rtl? 'right':'left'"
+                                        class="badge badge-pill badge-light">{{'Name' | translate}}</span>
+                                </label>
+                                <input #name="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"
+                                    name="governoratName" id="governoratName"
+                                    [(ngModel)]="GovernorateServ.SIgovernorate.governoratName"
+                                    placeholder="{{'Name' | translate}}" required>
+                                <div class="text-danger" *ngIf="isSubmitted && name.invalid && name.errors?.required ">
+                                    <small>{{'required' | translate}}</small>
+                                </div>
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="Latname"><span
+                                        [style.float]="Rtl? 'right':'left'"
+                                        class="badge badge-pill badge-light">{{'LatName' | translate}}</span>
+                                </label>
+                                <input #name="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"
+                                    name="governoratLatName" id="governoratLatName"
+                                    [(ngModel)]="GovernorateServ.SIgovernorate.governoratLatName"
+                                    placeholder="{{'LatName' | translate}}" required>
+                                <div class="text-danger" *ngIf="isSubmitted && name.invalid && name.errors?.required ">
+                                    <small>{{'required' | translate}}</small>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="countryCode"><span
+                                        [style.float]="Rtl? 'right':'left'" class="badge badge-pill badge-light">Country
+                                        Code</span>
+                                </label>
+                                <select #countryCode="ngModel" class="custom-select custom-select-sm"
+                                    [(ngModel)]="GovernorateServ.SIgovernorate.countryCode" name="countryCode" id="countryCode"
+                                    (change)="onChangeSelectioncountryID(countryCode.value)" required>
+                                    <option *ngFor="let option of countryList" value={{option.countryCode}}>
+                                        {{option.countryEngName}}
+                                    </option>
+                                </select>
+
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col text-center">
+                                <button class="btn btn-success btn-sm" data-style="zoom-in">
+                                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                </button>
+                                &nbsp;&nbsp;
+                                <button type="button" class="btn btn-dark btn-sm" (click)="reset()">
+                                    <span class="fas fa-undo"> &nbsp;&nbsp;</span> {{'Reset' |
+                                    translate}}&nbsp;&nbsp;</button>
+                                &nbsp;&nbsp;
+
+                                <button type="button" class="btn btn-danger btn-sm"
+                                    *ngIf="GovernorateServ.SIgovernorate.governorateCode!=''"
+                                    (click)="Delete(GovernorateServ.SIgovernorate.governorateCode)">
+                                    <span class="fas fa-trash-alt">&nbsp;&nbsp;</span>{{'Delete' | translate}}
+                                    &nbsp;&nbsp;</button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template>

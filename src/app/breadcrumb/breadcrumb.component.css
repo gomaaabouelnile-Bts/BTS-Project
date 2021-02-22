@@ -1,0 +1,66 @@
+
+.breadcrumb--container {
+    position: relative;
+    margin: 6em 0 3em 0;
+}
+
+.breadcrumb {
+    padding: 15px 15px 15px 50px;
+    margin: 0;
+    background: #F5A71C;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.breadcrumb li {
+    display: inline-block;
+}
+.breadcrumb li:first-child {
+    margin-left: 2em;
+}
+
+.breadcrumb .home-icon {
+    width: 5em;
+    height: 5em;
+    border-radius: 50%;
+    background: #f5a51c;
+    color: #fff;
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.2);
+    text-align: center;
+    position: absolute;
+    top: -10px;
+    left: -15px;
+    z-index: 1;
+    transition: all 0.1s ease 0s;
+}
+
+.breadcrumb .home-icon:hover {
+    transform: scale(1.1);
+}
+
+.breadcrumb .home-icon a {
+    color: #fff;
+    font-size: 3em;
+    line-height: 1.5em;
+}
+
+.breadcrumb--links li a::after {
+    content: "/";
+    padding: 0 1em ;
+    display: inline-block;
+    color: #fff;
+}
+
+.breadcrumb li a,
+.breadcrumb .breadcrumb--active {
+    font-size: 15px;
+    color: rgba(255, 255, 255, 0.829);
+
+}
+
+.breadcrumb .breadcrumb--active {
+    font-weight: 500;
+    font-size: 20px;
+    color: #fff;
+
+}

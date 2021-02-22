@@ -1,0 +1,87 @@
+
+<div class="form-bg">
+   
+    <div class="container">
+        <div class="row">
+            <div class="col-md-offset-3 col-md-6">
+                <form class="form-horizontal">
+                    <span class="heading">Login</span>
+                    <div class="form-group">
+                        <input    class="form-control" id="inputEmail3"
+                        [(ngModel)] ="this.AdminServ.Seruser.userName"  name="userName"
+                        placeholder="Username">
+                        <i class="fa fa-user"></i>
+                    </div>
+                    <div class="form-group help">
+                        <input  type="password" name="password"
+                        [(ngModel)] ="AdminServ.Seruser.password" class="form-control" id="inputPassword3" placeholder="Password">
+                        <i class="fa fa-lock"></i>
+                        <a href="#" class="fa fa-question-circle"></a>
+                    </div>
+                    <div class="form-group form--footer">
+                        <div class="main-checkbox">
+                            <input type="checkbox" value="None" id="checkbox1" name="check">
+                            <label for="checkbox1"></label>
+                        </div>
+                        <span class="text">Remember me</span>
+                        <button  class="btn btn-default log-in" (click)=" onSubmit()">log in</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</div>
+
+<!-- <div style="text-align: center; justify-content: center; margin-top: 10px; margin-bottom: 10px; ">
+    <h3>Log IN</h3>
+</div>
+
+
+
+<form #Login="ngForm" (ngSubmit)="onSubmit(Login)">
+    <div class="container">
+
+        <div class="form-row">
+            <div class="form-group col-md-6">
+                <label for="adminMail"><span class="badge badge-pill badge-light">
+                        UserName</span> <label class="text-danger"
+                        *ngIf="isSubmitted && adminMail.invalid && adminMail.errors?.required ">
+                        *</label>
+                </label>
+                <input #adminMail="ngModel" type="text" name="adminMail"
+                    [(ngModel)]="AdminServ.ILogin.adminMail" class="form-control input-sm" id="adminMail"
+                    placeholder="Enter UserName" required>
+            </div>
+
+            <div class="form-group col-md-6">
+                <label for="adminPassword"><span class="badge badge-pill badge-light">
+                        Password</span> <label class="text-danger"
+                        *ngIf="isSubmitted && adminPassword.invalid && adminPassword.errors?.required ">
+                        *</label> </label>
+                <input #adminPassword="ngModel" type="password" name="adminPassword"
+                    [(ngModel)]="AdminServ.ILogin.adminPassword" class="form-control input-sm"
+                    id="adminPassword" placeholder="Enter Password" required>
+            </div>
+        </div>
+        <div class="col text-center">
+            <label class="text-danger" *ngIf="InvalidLogin">Invalid UserName Or Password</label>
+        </div>
+        <div class="col text-center">
+            <label class="text-danger" *ngIf="!InvalidLogin">Ya Welcomee</label>
+        </div>
+        <div class="form-row">
+            <div class="col text-center">
+                <button class="btn btn-primary	mt-4 btn-sm" data-style="zoom-in">
+                    <span class="fas fa-save"></span>Login
+                   
+                </button>
+            </div>
+        </div>
+       
+    </div>
+    <div class="form-row">
+        <div class="col text-center">
+            <a class="btn btn-primary	mt-4 btn-sm" data-style="zoom-in" routerLink="register"> register</a>
+        </div></div>
+</form> -->

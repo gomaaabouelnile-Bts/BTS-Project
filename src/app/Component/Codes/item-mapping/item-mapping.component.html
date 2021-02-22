@@ -1,0 +1,141 @@
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+    <div class="Company">
+        <h3> Item Mapping  </h3>
+      </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <button type="button" id="btnoption" class="btn btn-success btn-sm" (click)="Addnewrecord(template)">
+                <i class="fas fa-plus"></i>  Add New Record
+            </button>
+        </div>
+        <div class="form-group col-md-6">
+            <button type="button" id="btnoption" class="btn btn-info btn-sm" (click)="UpdateRecord(template)">
+                <i class="fas fa-edit"></i> {{'Update' | translate }}
+            </button>
+        </div>
+    </div>
+</div>
+<hr>
+<div class="container">
+
+    <div class="form-row">
+        <ag-grid-angular #agGrid style="width: 95%; height: 450px;" class="ag-theme-alpine" [rowData]="rowData | async "
+            [columnDefs]="columnDefs" [defaultColDef]="defaultColDef" [enableRtl]="Rtl" animateRows
+            [rowSelection]="rowSelection" (selectionChanged)="onSelectionChanged($event)"
+            (gridReady)="onGridReady($event)" (rowDoubleClicked)="onrowDoubleClicked($event)" pagination>
+        </ag-grid-angular>
+    </div>
+</div>
+
+<ng-template #template>
+    <div class="modal" id="myModal" role="dialog" [dir]="Rtl==true?'RTL':'LTR'" [style.display]=" 'block'">
+
+        <div class="modal-dialog modal-dialog-centered" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h6 class="modal-title" id="exampleModalLongTitle">{{title| translate }}</h6>
+                    <button type="button" class="close" (click)="hide()" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <form #Items="ngForm" (ngSubmit)="onSubmit(Items)">
+                        <div class="form-row">
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="erpItemCode"><span
+                                    [style.float]="Rtl? 'right':'left'"
+                                    class="badge badge-pill badge-light">ERP Item Code</span>
+                            </label>
+                                <input #erpItemCode="ngModel" type="text" data-dismiss="modal" 
+                                class="form-control input-sm"
+                                    name="erpItemCode" id="erpItemCode" [(ngModel)]="objServ.SIitemMapping.erpItemCode"
+                                    placeholder="Item Code"
+[readonly]="mode===0"
+                                    required>
+                                <div class="text-danger" *ngIf="isSubmitted && erpItemCode.invalid && erpItemCode.errors?.required ">
+                                    <small>{{'required' | translate}}</small>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="erpItemName"><span
+                                        [style.float]="Rtl? 'right':'left'"
+                                        class="badge badge-pill badge-light">ERP Item Arabic Name</span>
+                                </label>
+                                <input #erpItemName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"
+                                name="erpItemName" id="erpItemName" [(ngModel)]="objServ.SIitemMapping.erpItemName"
+                                placeholder="erpItemName" required>
+                            <div class="text-danger" *ngIf="isSubmitted && erpItemName.invalid && erpItemName.errors?.required ">
+                                <small>{{'required' | translate}}</small>
+                            </div>
+                              
+                            </div>
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="erpItemEngName"><span
+                                        [style.float]="Rtl? 'right':'left'"
+                                        class="badge badge-pill badge-light">ERP Item English Name</span>
+                                </label>
+                                <input #erpItemEngName="ngModel" type="text" data-dismiss="modal" class="form-control input-sm"
+                                    name="erpItemEngName" id="erpItemEngName" [(ngModel)]="objServ.SIitemMapping.erpItemEngName"
+                                    placeholder="erpItemEngName" required>
+                                <div class="text-danger" *ngIf="isSubmitted && erpItemEngName.invalid && erpItemEngName.errors?.required ">
+                                    <small>{{'required' | translate}}</small>
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-row">
+
+                            <div class="form-group col-md-6">
+                                <label [style.float]="Rtl? 'right':'left'" for="eInvoiceItemGPC"><span
+                                        [style.float]="Rtl? 'right':'left'"
+                                        class="badge badge-pill badge-light">e-Invoice GPC Item Name</span>
+                                </label>
+                                <select #eInvoiceItemGPC="ngModel" class="custom-select custom-select-sm"
+                                [(ngModel)]="objServ.SIitemMapping.eInvoiceItemGPC" name="eInvoiceItemGPC"
+                                 id="eInvoiceItemGPC"
+                                (change)="onChangeSelection(eInvoiceCurrencyCode.value)" required>
+                                <option *ngFor="let option of eInvoiceCurrencyList" value={{option.gpcCode}}>
+                                    {{option.gpcEngName}}
+                                </option>
+                            </select>
+                            </div>
+
+                          
+
+                        </div>
+
+                        <div class="form-row">
+                            <div class="col text-center">
+                                <button class="btn btn-success btn-sm" data-style="zoom-in">
+                                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                                    &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
+                                </button>
+                               
+                                &nbsp;&nbsp;
+
+                                <button type="button" class="btn btn-danger btn-sm" *ngIf="Update"
+                                    (click)="Delete(objServ.SIitemMapping.erpItemCode)">
+                                    <span class="fas fa-trash-alt">&nbsp;&nbsp;</span>{{'Delete' | translate}}
+                                    &nbsp;&nbsp;</button>
+                                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+
+                                </div>
+                            </div>
+                        </div>
+
+                    </form>
+
+                </div>
+
+            </div>
+        </div>
+    </div>
+</ng-template>

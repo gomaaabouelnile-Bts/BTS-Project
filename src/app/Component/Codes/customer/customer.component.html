@@ -1,0 +1,295 @@
+
+<ngx-spinner></ngx-spinner>
+
+<div class="container">
+  <div class="Company">
+    <h3> Customer</h3>
+  </div>
+  <hr>
+<div class="form-row" [hidden]="insert">
+  <div class="form-group col-md-6">
+   <button type="button" id="btnoption" class="btn btn-success btn-sm" (click) = "Addnewrecord()" >
+    <i class="fas fa-plus"></i> {{'AddNewRecord' | translate }}
+  </button>
+  </div>
+  <div class="form-group col-md-6">
+  <button type="button" id="btnoption" class="btn btn-info btn-sm" (click) = "UpdateRecord()" >
+    <i class="fas fa-edit"></i> {{'Update' | translate }}
+  </button>
+  </div>
+</div>
+</div>
+
+<div class="container" [hidden]="insert">
+
+<div class="form-row">
+    <ag-grid-angular 
+    #agGrid
+    style="width: 95%; height: 450px;" 
+    class="ag-theme-alpine"
+    [rowData]="rowData | async " 
+    [columnDefs]="columnDefs"
+    [defaultColDef]="defaultColDef"
+    [enableRtl]="Rtl"
+    animateRows
+    [rowSelection]="rowSelection"
+    (selectionChanged)="onSelectionChanged($event)"
+    (gridReady)="onGridReady($event)"
+    (rowDoubleClicked)="onrowDoubleClicked($event)"
+    pagination>
+    </ag-grid-angular>
+</div>
+</div>
+
+<div class="container" [hidden]="!insert">
+    
+  
+          
+           <form #Groups="ngForm" (ngSubmit)="onSubmit(Groups)"  >
+            <div class="form-row">
+              
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="customerName"><span [style.float]="Rtl? 'right':'left'" class="badge badge-pill badge-light">
+                  Customer Arabic Name</span>
+                 </label>
+                <input #customerName="ngModel" type="text" data-dismiss="modal" 
+                class="form-control input-sm"  name="customerName" id="customerName"
+                 [(ngModel)]="objServ.SIcustomer.customerName"  placeholder="Customer Arabic Name" required>
+                 <div class="text-danger" *ngIf="isSubmitted && customerName.invalid && customerName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+
+              <div class="form-group col-md-6">
+                <label [style.float]="Rtl? 'right':'left'" for="customerEngName"><span [style.float]="Rtl? 'right':'left'" 
+                  class="badge badge-pill badge-light">Customer English Name</span>
+                 </label>
+                <input #customerEngName="ngModel" type="text" data-dismiss="modal" 
+                class="form-control input-sm"  name="customerEngName" id="customerEngName"
+                 [(ngModel)]="objServ.SIcustomer.customerEngName"  placeholder="Customer English Name" required>
+                 <div class="text-danger" *ngIf="isSubmitted && customerEngName.invalid && customerEngName.errors?.required ">
+                  <small>{{'required' | translate}}</small>
+            </div>
+              </div>
+              
+
+
+              
+            </div>
+            <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="customerCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Customer Code</span>
+                   </label>
+                  <input #customerCode="ngModel" type="text" data-dismiss="modal" 
+                  class="form-control input-sm"  name="customerCode" id="customerCode"
+                   [(ngModel)]="objServ.SIcustomer.customerCode"  placeholder="customerCode" required>
+                   <div class="text-danger" *ngIf="isSubmitted && customerCode.invalid && customerCode.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="countryCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Country Code</span>
+                   </label>
+                   <select #countryCode="ngModel" class="custom-select custom-select-sm"
+                    [(ngModel)]="objServ.SIcustomer.countryCode" name="countryCode" id="countryCode"
+                    (change)="onChangeSelectioncountryID(countryCode.value)" required>
+                    <option *ngFor="let option of countryList" value={{option.countryCode}}>
+                        {{option.countryEngName}}
+                    </option>
+                </select>
+               
+              </div>
+             
+                
+              </div>
+
+
+
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="governorateName"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Governorate</span>
+                   </label>
+                   <input #governorateName="ngModel" type="text" data-dismiss="modal" 
+                   class="form-control input-sm"  name="governorateName" id="governorateName"
+                    [(ngModel)]="objServ.SIcustomer.governorateName"  placeholder="governorate Name" required>
+          <!--          <select #governorateCode="ngModel" class="custom-select custom-select-sm"
+                   [(ngModel)]="objServ.SIcustomer.governorateCode" name="governorateCode" id="governorateCode"
+                   (change)="onChangegovernorateSerial(governorateCode.value)" required>
+                   <option *ngFor="let option of governoratelist" value={{option.governorateSerial}}>
+                       {{option.governoratName}}
+                   </option>
+               </select> -->
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="regionCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Region</span>
+                   </label>
+                   <input #regionName="ngModel" type="text" data-dismiss="modal" 
+                   class="form-control input-sm"  name="regionName" id="regionName"
+                    [(ngModel)]="objServ.SIcustomer.regionName"  placeholder="Region Name" required>
+                  <!--  <select #regionCode="ngModel" class="custom-select custom-select-sm"
+                    [(ngModel)]="objServ.SIcustomer.regionCode" name="regionCode" id="regionCode"
+                    (change)="onChangeregionSerial(regionCode.value)" required>
+                    <option *ngFor="let option of regionlist" value={{option.regionCode}}>
+                        {{option.regionName}}
+                    </option>
+                </select> -->
+               
+              </div>
+             
+                
+              </div>
+
+
+
+           
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="street"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Street</span>
+                   </label>
+                  <input #street="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="street" id="street"
+                   [(ngModel)]="objServ.SIcustomer.street"  placeholder="street" >
+                 
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="buildingNumber"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Building Number</span>
+                   </label>
+                  <input #buildingNumber="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="buildingNumber" id="buildingNumber"
+                   [(ngModel)]="objServ.SIcustomer.buildingNumber"  placeholder="buildingNumber" >
+                 
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="postalCode"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Postal Code</span>
+                   </label>
+                  <input #postalCode="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="postalCode" id="postalCode"
+                   [(ngModel)]="objServ.SIcustomer.postalCode"  placeholder="postalCode">
+                
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="floor"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Floor</span>
+                   </label>
+                  <input #floor="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="floor" id="floor"
+                   [(ngModel)]="objServ.SIcustomer.floor"  placeholder="floor" >
+                
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="room"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Room</span>
+                   </label>
+                  <input #room="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="room" id="room"
+                   [(ngModel)]="objServ.SIcustomer.room"  placeholder="Room" >
+              
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="landmark"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Landmark</span>
+                   </label>
+                  <input #landmark="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="landmark" id="landmark"
+                   [(ngModel)]="objServ.SIcustomer.landmark"  placeholder="landmark" >
+                
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="additionalInformation"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Additional Information</span>
+                   </label>
+                  <input #additionalInformation="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="additionalInformation" id="additionalInformation"
+                   [(ngModel)]="objServ.SIcustomer.additionalInformation" 
+                    placeholder="additionalInformation" >
+                 
+                </div>
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="taxID"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">Tax ID</span>
+                   </label>
+                  <input #taxID="ngModel" type="text" data-dismiss="modal" class="form-control input-sm" 
+                   name="taxID" id="taxID"
+                   [(ngModel)]="objServ.SIcustomer.taxId"  placeholder="taxID" required>
+                   <div class="text-danger" *ngIf="isSubmitted && taxID.invalid && taxID.errors?.required ">
+                    <small>{{'required' | translate}}</small>
+              </div>
+                </div>
+             
+                
+              </div>
+
+              <div class="form-row">
+              
+              
+  
+                <div class="form-group col-md-6">
+                  <label [style.float]="Rtl? 'right':'left'" for="vATExemptionYN"><span [style.float]="Rtl? 'right':'left'" 
+                    class="badge badge-pill badge-light">VAT Exemption (Y/N)</span>
+                   </label>
+                  <input #vATExemptionYN="ngModel" type="checkbox" data-dismiss="modal" class="form-control input-sm" 
+                   name="vATExemptionYN" id="vATExemptionYN"
+                   value="{{objServ.SIcustomer.vATExemptionYN}}"
+                   [(ngModel)]="objServ.SIcustomer.vATExemptionYN"  placeholder="vATExemptionYN" >
+                
+                </div>
+             
+                
+              </div>
+<hr>
+              <div class="form-row">
+                <div class="col text-center">
+                <button class="btn btn-success btn-sm" data-style="zoom-in" >
+                    <span class="fas fa-save"></span>&nbsp;&nbsp;{{'Save' | translate}}
+                    
+                  </button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                  <button type="button" class="btn btn-outline-dark btn-sm" (click)="CancelSave()">
+                    <span class="fas fa-undo"> &nbsp;&nbsp;</span> {{'Cancel' | translate}}&nbsp;&nbsp;</button>
+                  &nbsp;&nbsp;  &nbsp;&nbsp;
+                    <button type="button" class="btn btn-danger btn-sm" *ngIf="objServ.SIcustomer.customerSerial>0"
+                        (click)="Delete(objServ.SIcustomer.customerSerial)">
+                        <span class="fas fa-trash-alt">&nbsp;&nbsp;</span>{{'Delete' | translate}}  &nbsp;&nbsp;</button>
+                </div></div>
+            <br><br>
+              
+        </form>
+      
+         
+            </div>
+ 
